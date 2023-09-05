@@ -19,11 +19,24 @@ let contact = [
 
 class App extends Component {
   state = {
-    contacts: localStorage.getItem('contact')
-      ? JSON.parse(localStorage.getItem('contact'))
-      : contact,
+    contacts: [],
     filter: '',
   };
+
+  componentDidMount() {
+    this.setState({
+      contacts: localStorage.getItem('contact')
+        ? JSON.parse(localStorage.getItem('contact'))
+        : contact,
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log(prevProps, prevState);
+    if (prevState.contacts.length !== this.state.contacts.length) {
+      localStorage.setItem('contact', JSON.stringify(this.state.contacts));
+    }
+  }
 
   onSubmit = contact => {
     const duplicate = this.state.contacts.find(
@@ -43,13 +56,6 @@ class App extends Component {
       contacts: [...prevState.contacts, newContact],
     }));
   };
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log(prevProps, prevState);
-    if (prevState.contacts.length !== this.state.contacts.length) {
-      localStorage.setItem('contact', JSON.stringify(this.state.contacts));
-    }
-  }
 
   handleChange = value => {
     this.setState({
