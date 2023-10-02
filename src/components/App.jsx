@@ -33,7 +33,7 @@ class App extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     console.log(prevProps, prevState);
-    if (prevState.contacts.length !== this.state.contacts.length) {
+    if (prevState.contacts !== this.state.contacts) {
       localStorage.setItem('contact', JSON.stringify(this.state.contacts));
     }
   }
